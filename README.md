@@ -1,3 +1,3 @@
-# Quasar App
+# Quasar App with Parse-Server Back-End Enabled
 
-> WIP
+
