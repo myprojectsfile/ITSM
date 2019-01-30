@@ -10,7 +10,8 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0",
-    "start": "node index.js"
+    "api": "node index.js",
+    "dash": "parse-dashboard --appId UCZVB5TLA4 --masterKey 5n84nvuhXrRt2C5L --serverURL \"http://localhost:1337/parse\" --appName parsqua"
   },
   "license": "MIT",
   "dependencies": {
