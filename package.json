@@ -8,7 +8,7 @@
   "author": "Ahmadi.Mohammad <ahmadi80@gmail.com>",
   "private": true,
   "scripts": {
-    "lint": "eslint --ext .js,.vue src",
+    "lint": "eslint --fix --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0",
     "api": "node index.js",
     "dash": "parse-dashboard --appId UCZVB5TLA4 --masterKey 5n84nvuhXrRt2C5L --serverURL \"http://localhost:1337/parse\" --appName parsqua"

@@ -16,9 +16,9 @@ export default {
     }
   },
   methods: {
-    setUser () {
+    login () {
       this.username = ''
-      this.$parse.User.logIn('admin', '123456').then((user) => {
+      this.$parse.User.logIn('admin', '123456').then(user => {
         console.log(user)
       })
     }

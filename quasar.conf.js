@@ -22,17 +22,17 @@ module.exports = function (ctx) {
       scopeHoisting: true,
       vueRouterMode: 'history',
       // vueCompiler: true,
-      gzip: true,
+      gzip: true
       // analyze: true,
       // extractCSS: false,
-      extendWebpack (cfg) {
-        cfg.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /node_modules/
-        })
-      }
+      // extendWebpack (cfg) {
+      //   cfg.module.rules.push({
+      //     enforce: 'pre',
+      //     test: /\.(js|vue)$/,
+      //     loader: 'eslint-loader',
+      //     exclude: /node_modules/
+      //   })
+      // }
     },
     devServer: {
       // https: true,
