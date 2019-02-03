@@ -1,14 +1,24 @@
 <template>
   <q-page class="flex flex-center">
-    <img alt="Quasar logo" src="~assets/quasar-logo-full.svg">
+    <p>username:{{username}}</p>
+    <button @click="setUser">set username</button>
   </q-page>
 </template>
-
 <style>
 </style>
 
 <script>
 export default {
-  name: 'PageIndex'
+  name: 'PageIndex',
+  data () {
+    return {
+      username: 'mohammad'
+    }
+  },
+  methods: {
+    setUser () {
+      this.username = this.$parse.User.current()
+    }
+  }
 }
 </script>
