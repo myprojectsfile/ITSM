@@ -5,20 +5,22 @@ module.exports = function (ctx) {
     // app plugins (/src/plugins)
     plugins: [
       'axios',
-      'parse'
+      'parse',
+      'i18n'
     ],
     css: [
       'app.styl'
     ],
     extras: [
       ctx.theme.mat ? 'roboto-font' : null,
-      'material-icons' // optional, you are not bound to it
+      'material-icons'
       // 'ionicons',
       // 'mdi',
       // 'fontawesome'
     ],
     supportIE: true,
     build: {
+      rtl: true,
       scopeHoisting: true,
       vueRouterMode: 'history',
       // vueCompiler: true,
@@ -41,6 +43,7 @@ module.exports = function (ctx) {
     },
     // framework: 'all' --- includes everything; for dev only!
     framework: {
+      i18n: 'fa-ir',
       components: [
         'QLayout',
         'QLayoutHeader',
