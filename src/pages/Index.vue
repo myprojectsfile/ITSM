@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center">
     <p>username:{{username}}</p>
-    <button @click="setUser">set username</button>
+    <button @click="login">set username</button>
   </q-page>
 </template>
 <style>
