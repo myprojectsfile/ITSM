@@ -28,7 +28,8 @@ export default {
   name: 'PageIndex',
   data () {
     return {
-      model: 'Some text'
+      model: 'Some text',
+      loading: false
     }
   },
   methods: {
