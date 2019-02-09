@@ -3,7 +3,7 @@
     <q-page class="flex flex-center">
       <div class="column">
         <div class="q-mb-md">
-          <blockquote class="shadow-3 q-py-xl" color="secondary">
+          <blockquote class="shadow-3 q-py-xl round-borders" color="secondary">
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante</p>
             <small>
               Someone famous for
@@ -12,8 +12,8 @@
           </blockquote>
         </div>
         <div>
-          <q-btn color="tertiary" @click="login">
-            <q-icon name="account_circle" size="1.5rem"/> login
+          <q-btn color="pink" @click="login">
+            <q-icon name="account_circle" size="1.5rem"/>login
           </q-btn>
         </div>
       </div>
@@ -26,6 +26,11 @@
 <script>
 export default {
   name: 'PageIndex',
+  data () {
+    return {
+      model: 'Some text'
+    }
+  },
   methods: {
     login () {
       this.username = ''
@@ -42,3 +47,9 @@ export default {
   }
 }
 </script>
+
+<style>
+#input1 {
+  font-family: shabnam;
+}
+</style>
