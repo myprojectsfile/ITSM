@@ -6,14 +6,14 @@
           <blockquote class="shadow-3 q-py-xl round-borders" color="secondary">
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante</p>
             <small>
-              Someone famous for
-              <cite title="Quasar Framework">Quasar Framework</cite>
+              <p>welcome to ITSM</p>
+              <cite title="Quasar Framework">اداره فناوری اطلاعات و ارتباطات</cite>
             </small>
           </blockquote>
         </div>
         <div>
           <q-btn color="pink" @click="login">
-            <q-icon name="account_circle" size="1.5rem"/>login
+            <q-icon name="account_circle" size="1.5rem"/>&nbsp;ورود به سامانه
           </q-btn>
         </div>
       </div>

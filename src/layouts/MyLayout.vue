@@ -23,8 +23,8 @@
       <router-view/>
     </q-page-container>
     <q-page-sticky position="bottom-left" :offset="[18, 18]">
-      <q-fab glossy size="1em" color="primary" icon="mail" direction="up">
-        <q-fab-action glossy color="primary" icon="send"></q-fab-action>
+      <q-fab glossy color="primary" icon="mail" direction="up">
+        <q-fab-action size="sm" glossy color="primary" icon="send"></q-fab-action>
         <q-fab-action glossy color="secondary" icon="alarm"/>
       </q-fab>
     </q-page-sticky>
