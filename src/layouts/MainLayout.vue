@@ -33,10 +33,12 @@
           <q-item-main label="درخواست"/>
         </q-item>
         <q-item-separator/>
-        <q-list-header>Previous chats</q-list-header>
+        <q-list-header>مدیریت سامانه</q-list-header>
         <q-item>
-          <q-item-side avatar="statics/guy-avatar.png"/>
-          <q-item-main label="Jack Doe"/>
+          <q-item-side avatar>
+              <q-item-tile icon="supervised_user_circle" color="primary"/>
+          </q-item-side>
+          <q-item-main label="مدیریت کاربران"/>
         </q-item>
       </q-list>
     </q-layout-drawer>
