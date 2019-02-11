@@ -5,8 +5,8 @@
         <q-btn flat dense round @click="rightDrawerOpen = !rightDrawerOpen" aria-label="Menu">
           <q-icon name="menu"/>
         </q-btn>
-        <q-toolbar-title>Quasar App
-          <div slot="subtitle">Running on Quasar v{{ $q.version }}</div>
+        <q-toolbar-title>ITSM
+          <div slot="subtitle">سامانه مدیریت خدمات فناوری اطلاعات &nbsp; 0.1.1</div>
         </q-toolbar-title>
       </q-toolbar>
     </q-layout-header>
@@ -18,7 +18,28 @@
       side="left"
       @mouseover="miniState = false"
       @mouseout="miniState = true"
-    ></q-layout-drawer>
+    >
+      <q-list highlight>
+        <q-item>
+          <q-item-side avatar>
+              <q-item-tile icon="report" color="red"/>
+          </q-item-side>
+          <q-item-main label="گزارش حادثه"/>
+        </q-item>
+        <q-item>
+          <q-item-side avatar>
+              <q-item-tile icon="devices_other" color="primary"/>
+          </q-item-side>
+          <q-item-main label="درخواست"/>
+        </q-item>
+        <q-item-separator/>
+        <q-list-header>Previous chats</q-list-header>
+        <q-item>
+          <q-item-side avatar="statics/guy-avatar.png"/>
+          <q-item-main label="Jack Doe"/>
+        </q-item>
+      </q-list>
+    </q-layout-drawer>
     <q-page-container>
       <router-view/>
     </q-page-container>
@@ -34,7 +55,7 @@
 import { openURL } from 'quasar'
 
 export default {
-  name: 'MyLayout',
+  name: 'MainLayout',
 
   data () {
     return {

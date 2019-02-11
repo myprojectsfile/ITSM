@@ -59,10 +59,13 @@ module.exports = function (ctx) {
         'QItem',
         'QItemMain',
         'QItemSide',
+        'QItemSeparator',
+        'QItemTile',
         'QInput',
         'QPageSticky',
         'QFab',
-        'QFabAction'
+        'QFabAction',
+        'QToggle'
       ],
       directives: [
         'Ripple'
