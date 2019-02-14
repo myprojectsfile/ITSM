@@ -8,6 +8,9 @@
         <q-toolbar-title>ITSM
           <div slot="subtitle">سامانه مدیریت خدمات فناوری اطلاعات &nbsp; 0.1.1</div>
         </q-toolbar-title>
+        <q-toolbar-title>
+         {{isLoggedIn?currentUser.attributes.username:''}} is logged in:{{isLoggedIn}}
+        </q-toolbar-title>
       </q-toolbar>
     </q-layout-header>
     <q-layout-drawer
@@ -22,13 +25,13 @@
       <q-list highlight>
         <q-item>
           <q-item-side avatar>
-              <q-item-tile icon="report" color="red"/>
+            <q-item-tile icon="report" color="red"/>
           </q-item-side>
           <q-item-main label="گزارش حادثه"/>
         </q-item>
         <q-item>
           <q-item-side avatar>
-              <q-item-tile icon="devices_other" color="primary"/>
+            <q-item-tile icon="devices_other" color="primary"/>
           </q-item-side>
           <q-item-main label="درخواست"/>
         </q-item>
@@ -36,7 +39,7 @@
         <q-list-header>مدیریت سامانه</q-list-header>
         <q-item>
           <q-item-side avatar>
-              <q-item-tile icon="supervised_user_circle" color="primary"/>
+            <q-item-tile icon="supervised_user_circle" color="primary"/>
           </q-item-side>
           <q-item-main label="مدیریت کاربران"/>
         </q-item>
@@ -55,6 +58,7 @@
 </template>
 <script>
 import { openURL } from 'quasar'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'MainLayout',
@@ -65,9 +69,15 @@ export default {
       miniState: true
     }
   },
-
   methods: {
+    ...mapActions({ logOut: 'auth/logOut' }),
     openURL
+  },
+  computed: {
+    ...mapGetters({
+      currentUser: 'auth/currentUser',
+      isLoggedIn: 'auth/isLoggedIn'
+    })
   }
 }
 </script>
