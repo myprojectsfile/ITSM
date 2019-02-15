@@ -6,17 +6,20 @@
           <blockquote class="shadow-3 q-py-xl round-borders" color="secondary">
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante</p>
             <small>
-              <p>welcome to ITSM </p>
+              <p>welcome to ITSM</p>
               <cite title="Quasar Framework">اداره فناوری اطلاعات و ارتباطات</cite>
             </small>
           </blockquote>
         </div>
         <div>
-          <q-btn color="pink" @click="logIn({username:'admin',password:'123456'})">
+          <q-btn color="pink q-mr-sm" @click="logIn({username:'admin',password:'123456'})">
             <q-icon name="account_circle" size="1.5rem"/>&nbsp;ورود به سامانه
           </q-btn>
-          <q-btn color="primary" @click="logOut()">
+          <q-btn color="primary q-mr-sm" @click="logOut()">
             <q-icon name="account_circle" size="1.5rem"/>&nbsp;خروج
+          </q-btn>
+          <q-btn color="secondary" @click="createNewIncident({title:'hang my pc'})">
+            <q-icon name="account_circle" size="1.5createIncidentrem"/>&nbsp;ثبت حادثه
           </q-btn>
         </div>
       </div>
@@ -28,6 +31,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { createIncident } from '../store/api/actions'
 
 export default {
   name: 'PageIndex',
@@ -38,7 +42,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions({logIn: 'auth/logIn', logOut: 'auth/logOut'})
+    ...mapActions({
+      logIn: 'auth/logIn',
+      logOut: 'auth/logOut',
+      createIncident: 'api/createIncident'
+    }),
+    createNewIncident: (payload) => {
+      createIncident(payload)
+        .then(() => {
+          console.log('incident created')
+        })
+    }
   },
   computed: {
     currentUser () {
