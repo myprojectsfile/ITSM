@@ -10,7 +10,7 @@
   "scripts": {
     "lint": "eslint --fix --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0",
-    "api": "node index.js",
+    "api": "nodemon index.js",
     "dash": "parse-dashboard --appId UCZVB5TLA4 --masterKey 5n84nvuhXrRt2C5L --serverURL \"http://localhost:1337/parse\" --appName ITSM",
     "dev": "quasar dev"
   },
