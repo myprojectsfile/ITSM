@@ -12,7 +12,7 @@
           </blockquote>
         </div>
         <div>
-          <q-btn color="pink q-mr-sm" @click="logIn({username:'admin',password:'123456'})">
+          <q-btn color="pink q-mr-sm" @click="logIn({username:'mohammad',password:'123456'})">
             <q-icon name="account_circle" size="1.5rem"/>&nbsp;ورود به سامانه
           </q-btn>
           <q-btn color="primary q-mr-sm" @click="logOut()">
@@ -47,11 +47,15 @@ export default {
       logOut: 'auth/logOut',
       createIncident: 'api/createIncident'
     }),
-    createNewIncident: (payload) => {
-      createIncident(payload)
-        .then(() => {
+    createNewIncident: payload => {
+      createIncident(payload).then(
+        () => {
           console.log('incident created')
-        })
+        },
+        error => {
+          console.log(error)
+        }
+      )
     }
   },
   computed: {

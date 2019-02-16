@@ -11,6 +11,7 @@ export const logOut = ({commit}) => {
 export const logIn = ({commit}, payload) => {
   Parse.User.logIn(payload.username, payload.password).then(
     (user) => {
+      console.log(user)
       commit('logIn', user)
     },
     () => {})

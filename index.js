@@ -4,6 +4,7 @@
 var express = require('express')
 var ParseServer = require('parse-server').ParseServer
 var path = require('path')
+var ntlm = require('express-ntlm')
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI
 
@@ -34,9 +35,22 @@ app.use('/public', express.static(path.join(__dirname, '/public')))
 var mountPath = process.env.PARSE_MOUNT || '/parse'
 app.use(mountPath, api)
 
+app.use(ntlm({
+  debug: function () {
+    var args = Array.prototype.slice.apply(arguments)
+    console.log.apply(null, args)
+  },
+  domain: 'bpmo.local',
+  domaincontroller: 'ldap://10.1.1.110:389'
+}))
+
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function (req, res) {
   res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!')
+})
+
+app.get('/authCheck', (req, res) => {
+  res.end(JSON.stringify(req.ntlm))
 })
 
 // There will be a test page available on the /test path of your server url

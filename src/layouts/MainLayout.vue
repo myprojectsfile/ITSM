@@ -8,9 +8,7 @@
         <q-toolbar-title>ITSM
           <div slot="subtitle">سامانه مدیریت خدمات فناوری اطلاعات &nbsp; 0.1.1</div>
         </q-toolbar-title>
-        <q-toolbar-title>
-         {{isLoggedIn?currentUser.attributes.username:''}} is logged in:{{isLoggedIn}}
-        </q-toolbar-title>
+        <q-toolbar-title>{{isLoggedIn?currentUser.attributes.username:''}} is logged in:{{isLoggedIn}}</q-toolbar-title>
       </q-toolbar>
     </q-layout-header>
     <q-layout-drawer
@@ -68,6 +66,22 @@ export default {
       rightDrawerOpen: this.$q.platform.is.desktop,
       miniState: true
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    // getPost(to.params.id, (err, post) => {
+    //   next(vm => vm.setData(err, post))
+    // })
+    console.log(`----------------> before route enter`)
+  },
+  // when route changes and this component is already rendered,
+  // the logic will be slightly different.
+  beforeRouteUpdate (to, from, next) {
+    this.post = null
+    // getPost(to.params.id, (err, post) => {
+    //   this.setData(err, post)
+    //   next()
+    // })
+    console.log(`----------------> before route update`)
   },
   methods: {
     ...mapActions({ logOut: 'auth/logOut' }),
