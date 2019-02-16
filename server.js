@@ -6,6 +6,7 @@ var ParseServer = require('parse-server').ParseServer
 var path = require('path')
 var ntlm = require('express-ntlm')
 const serverConfig = require('./server.config')
+var NodeSSPI = require('node-sspi')
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI
 
@@ -36,6 +37,7 @@ app.use('/public', express.static(path.join(__dirname, '/public')))
 var mountPath = process.env.PARSE_MOUNT || '/parse'
 app.use(mountPath, api)
 
+// Config NTLM
 if (serverConfig.USE_NTLM) {
   app.use(ntlm({
     debug: function () {
@@ -47,6 +49,19 @@ if (serverConfig.USE_NTLM) {
   }))
 }
 
+// Config SSPI
+if (serverConfig.USE_SSPI) {
+  var nodeSSPIObj = new NodeSSPI({
+    retrieveGroups: true
+  })
+
+  app.use(function (req, res, next) {
+    nodeSSPIObj.authenticate(req, res, (err) => {
+      if (err) res.send(err)
+      res.finished || next()
+    })
+  })
+}
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function (req, res) {
   res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!')
@@ -54,6 +69,11 @@ app.get('/', function (req, res) {
 
 app.get('/ntlm', (req, res) => {
   res.end(JSON.stringify(req.ntlm))
+})
+
+app.get('/sspi', (req, res) => {
+  // res.end(req.connection.user)
+  res.end(JSON.stringify(req.connection.userGroups))
 })
 
 // There will be a test page available on the /test path of your server url
