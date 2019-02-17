@@ -7,7 +7,8 @@ var path = require('path')
 var ntlm = require('express-ntlm')
 const serverConfig = require('./server.config')
 var NodeSSPI = require('node-sspi')
-const CircularJSON = require('circular-json')
+// const CircularJSON = require('circular-json')
+const auth = require('./auth')
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI
 
@@ -45,8 +46,8 @@ if (serverConfig.USE_NTLM) {
       var args = Array.prototype.slice.apply(arguments)
       console.log.apply(null, args)
     },
-    domain: serverConfig.DOMAIN || 'bpmo.local',
-    domaincontroller: serverConfig.DOMAIN_CONTROLLER || 'ldap://10.1.1.110:389'
+    domain: serverConfig.DOMAIN,
+    domaincontroller: serverConfig.DOMAIN_CONTROLLER
   }))
 }
 
@@ -78,30 +79,29 @@ app.get('/ntlm', (req, res) => {
 })
 
 app.get('/sspi', (req, res) => {
-  // res.end(req.connection.user)
   if (serverConfig.USE_SSPI) {
     var nodeSSPIObj = new NodeSSPI({
-      retrieveGroups: true,
-      domain: 'BPMO',
-      authoritative: false
+      retrieveGroups: true
     })
+
     nodeSSPIObj.authenticate(req, res, (err) => {
       if (err) res.send(err)
-      const fs = require('fs')
-      res.write(req.connection.user)
-      fs.writeFile('./fake-user.json', CircularJSON.stringify(req.connection.user), function (err) {
-        if (err) {
-          return console.log(err)
-        }
-        console.log('The file was saved!')
-      })
-      res.end((req.connection.userGroups[0]))
-      fs.writeFile('./fake-userGroup.json', req.connection.userGroups, function (err) {
-        if (err) {
-          return console.log(err)
-        }
-        console.log('The file was saved!')
-      })
+      const username = req.connection.user
+      // const userGroups = req.connection.userGroups
+      // const userSid = req.connection.userSid
+
+      // check if user a is member of AD
+      if (auth.checkUserOfAD(username)) {}
+      // Yes, user is on AD
+      // Check if user is signed up
+      // Yes, user is signed up
+      // Update user gropus
+      // Reset password and send via response
+      // No, user doesnot signed up
+      // Signup the user with default password
+      // Update user gropus
+      // No, user doesnot on AD
+      res.end('OK')
     })
   } else res.end('SSPI Not Enabled')
 })
