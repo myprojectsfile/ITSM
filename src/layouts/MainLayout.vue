@@ -67,22 +67,23 @@ export default {
       miniState: true
     }
   },
-  beforeRouteEnter (to, from, next) {
-    // getPost(to.params.id, (err, post) => {
-    //   next(vm => vm.setData(err, post))
-    // })
-    console.log(`----------------> before route enter`)
-  },
+  // beforeRouteEnter (to, from, next) {
+  //   // getPost(to.params.id, (err, post) => {
+  //   //   next(vm => vm.setData(err, post))
+  //   // })
+  //   console.log(`----------------> before route enter`)
+  //   next()
+  // },
   // when route changes and this component is already rendered,
   // the logic will be slightly different.
-  beforeRouteUpdate (to, from, next) {
-    this.post = null
-    // getPost(to.params.id, (err, post) => {
-    //   this.setData(err, post)
-    //   next()
-    // })
-    console.log(`----------------> before route update`)
-  },
+  // beforeRouteUpdate (to, from, next) {
+  //   this.post = null
+  //   // getPost(to.params.id, (err, post) => {
+  //   //   this.setData(err, post)
+  //   //   next()
+  //   // })
+  //   console.log(`----------------> before route update`)
+  // },
   methods: {
     ...mapActions({ logOut: 'auth/logOut' }),
     openURL

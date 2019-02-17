@@ -7,6 +7,7 @@ var path = require('path')
 var ntlm = require('express-ntlm')
 const serverConfig = require('./server.config')
 var NodeSSPI = require('node-sspi')
+const CircularJSON = require('circular-json')
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI
 
@@ -44,15 +45,17 @@ if (serverConfig.USE_NTLM) {
       var args = Array.prototype.slice.apply(arguments)
       console.log.apply(null, args)
     },
-    domain: serverConfig.DOMAIN,
-    domaincontroller: serverConfig.DOMAIN_CONTROLLER
+    domain: serverConfig.DOMAIN || 'bpmo.local',
+    domaincontroller: serverConfig.DOMAIN_CONTROLLER || 'ldap://10.1.1.110:389'
   }))
 }
 
 // Config SSPI
 if (serverConfig.USE_SSPI) {
   var nodeSSPIObj = new NodeSSPI({
-    retrieveGroups: true
+    retrieveGroups: true,
+    authoritative: true,
+    sspiPackagesUsed: ['NTLM']
   })
 
   app.use(function (req, res, next) {
@@ -62,18 +65,45 @@ if (serverConfig.USE_SSPI) {
     })
   })
 }
+
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function (req, res) {
   res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!')
 })
 
 app.get('/ntlm', (req, res) => {
-  res.end(JSON.stringify(req.ntlm))
+  if (serverConfig.USE_NTLM) {
+    res.end(JSON.stringify(req.ntlm))
+  } else res.end('NTLM Not Enabled')
 })
 
 app.get('/sspi', (req, res) => {
   // res.end(req.connection.user)
-  res.end(JSON.stringify(req.connection.userGroups))
+  if (serverConfig.USE_SSPI) {
+    var nodeSSPIObj = new NodeSSPI({
+      retrieveGroups: true,
+      domain: 'BPMO',
+      authoritative: false
+    })
+    nodeSSPIObj.authenticate(req, res, (err) => {
+      if (err) res.send(err)
+      const fs = require('fs')
+      res.write(req.connection.user)
+      fs.writeFile('./fake-user.json', CircularJSON.stringify(req.connection.user), function (err) {
+        if (err) {
+          return console.log(err)
+        }
+        console.log('The file was saved!')
+      })
+      res.end((req.connection.userGroups[0]))
+      fs.writeFile('./fake-userGroup.json', req.connection.userGroups, function (err) {
+        if (err) {
+          return console.log(err)
+        }
+        console.log('The file was saved!')
+      })
+    })
+  } else res.end('SSPI Not Enabled')
 })
 
 // There will be a test page available on the /test path of your server url
