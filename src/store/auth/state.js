@@ -1,4 +1,6 @@
+import Parse from '../parse-init'
+
 export default {
-  currentUser: {},
-  isLoggedIn: false
+  currentUser: Parse.User.current(),
+  isLoggedIn: !!Parse.User.current()
 }
