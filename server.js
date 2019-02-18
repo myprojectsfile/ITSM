@@ -87,21 +87,8 @@ app.get('/sspi', (req, res) => {
     nodeSSPIObj.authenticate(req, res, (err) => {
       if (err) res.send(err)
       const username = req.connection.user
-      // const userGroups = req.connection.userGroups
-      // const userSid = req.connection.userSid
-
-      // check if user a is member of AD
-      if (auth.checkUserOfAD(username)) {}
-      // Yes, user is on AD
-      // Check if user is signed up
-      // Yes, user is signed up
-      // Update user gropus
-      // Reset password and send via response
-      // No, user doesnot signed up
-      // Signup the user with default password
-      // Update user gropus
-      // No, user doesnot on AD
-      res.end('OK')
+      const userGroups = req.connection.userGroups
+      res.end(auth.authByAD(username, userGroups))
     })
   } else res.end('SSPI Not Enabled')
 })
