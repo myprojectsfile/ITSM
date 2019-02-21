@@ -2,7 +2,7 @@ const serverConfig = require('./server.config')
 const Parse = require('parse/node')
 
 // Initialize Parse Server
-Parse.initialize(serverConfig.PARSE_APP_ID)
+Parse.initialize(serverConfig.PARSE_APP_ID, null, serverConfig.PARSE_MASTER_KEY)
 Parse.serverURL = 'http://localhost:1337/parse'
 
 // check if user a is member of AD
@@ -17,42 +17,71 @@ async function checkIsUserExistInParse (username) {
   username = (username.split('\\'))[1]
   // Find user by username
   const query = new Parse.Query(Parse.User)
-  query.equalTo('username', username.toLowerCase())
-  const user = await query.find()
-  const result = !!user.length > 0
-  return result
+  query.equalTo('username', username)
+  const user = await query.first()
+
+  if (user) return [true, user]
+  else return [false, {}]
 }
 
-function updateUserRoles (userGroups) {}
-
-function resetPassword (username) {
-  return ''
+async function updateUserRoles (parseUser, userGroups) {
+  userGroups.forEach((group, index) => {
+    userGroups[index] = (group.split('\\'))[1]
+  })
+  var roleQuery = new Parse.Query(Parse.Role)
+  roleQuery.containedIn('name', userGroups)
+  var roles = await roleQuery.find()
+  roles.forEach((role) => {
+    role.getUsers().add(parseUser)
+    role.save(null, {
+      useMasterKey: true
+    }).then(() => {
+      console.log('save ok')
+    }, (error) => {
+      console.error(`save failed with error:${JSON.stringify(error)}`)
+    })
+  })
+  return roles
 }
 
-function signUpUser (username) {}
+async function resetPassword (parseUser) {
+  parseUser.set('password', serverConfig.DEFAULT_PASS)
+  await parseUser.save(null, {
+    useMasterKey: true
+  })
+  return serverConfig.DEFAULT_PASS
+}
+
+async function signUpUser (username) {
+  var user = new Parse.User()
+  user.set('username', username)
+  user.set('password', serverConfig.DEFAULT_PASS)
+  await user.save(null, {
+    useMasterKey: true
+  })
+  return user
+}
 
 async function authByAD (username, userGroups) {
   // check if user a is member of AD
-  if (checkUserOfAD(username)) { // Yes
+  if (checkUserOfAD(username)) { // Yes, user is AD user
     // Check if user is exist in parse db
-    const userexist = await checkIsUserExistInParse(username)
+    const [userexist, parseUser] = await checkIsUserExistInParse(username)
     if (userexist) { // Yes user exist
       // Update user gropus
-      updateUserRoles(userGroups)
-      return userGroups
+      await updateUserRoles(parseUser, userGroups)
       // Reset password and send via response
-      // const newPass = 'userexist' // resetPassword(username)
-      // return newPass
+      const newPassword = await resetPassword(parseUser)
+      return [username.split('\\')[1], newPassword]
     } else { // No user doesnot exist
       // Signup the user with default password
-      signUpUser(username)
+      let parseUser = await signUpUser(username.split('\\')[1])
       // Update user gropus
-      updateUserRoles(userGroups)
-      const newPass = 'usernotexist' // resetPassword(username)
-      return newPass
+      await updateUserRoles(parseUser, userGroups)
+      return [username.split('\\')[1], serverConfig.DEFAULT_PASS]
     }
-  } else { // No
-    return false
+  } else { // No, user is't AD user
+    return []
   }
 }
 

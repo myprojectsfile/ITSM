@@ -91,8 +91,9 @@ app.get('/sspi', (req, res) => {
       userGroups = userGroups.filter((group) => {
         return group.startsWith(serverConfig.DOMAIN_USER_PREFIX)
       })
-      auth.authByAD(username, userGroups).then((password) => {
-        res.send(password)
+      auth.authByAD(username, userGroups).then((result) => {
+        if (result.length > 0) res.status(200).send(result)
+        else res.status(401).send()
       })
     })
   } else res.send('SSPI Not Enabled')
