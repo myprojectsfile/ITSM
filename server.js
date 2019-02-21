@@ -87,10 +87,15 @@ app.get('/sspi', (req, res) => {
     nodeSSPIObj.authenticate(req, res, (err) => {
       if (err) res.send(err)
       const username = req.connection.user
-      const userGroups = req.connection.userGroups
-      res.end(auth.authByAD(username, userGroups))
+      let userGroups = req.connection.userGroups
+      userGroups = userGroups.filter((group) => {
+        return group.startsWith(serverConfig.DOMAIN_USER_PREFIX)
+      })
+      auth.authByAD(username, userGroups).then((password) => {
+        res.send(password)
+      })
     })
-  } else res.end('SSPI Not Enabled')
+  } else res.send('SSPI Not Enabled')
 })
 
 // There will be a test page available on the /test path of your server url
