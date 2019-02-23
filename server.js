@@ -9,6 +9,7 @@ const serverConfig = require('./server.config')
 var NodeSSPI = require('node-sspi')
 // const CircularJSON = require('circular-json')
 const auth = require('./auth')
+const cors = require('cors')
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI
 
@@ -31,7 +32,7 @@ var api = new ParseServer({
 // javascriptKey, restAPIKey, dotNetKey, clientKey
 
 var app = express()
-
+app.use(cors({origin: 'http://localhost:8080'}))
 // Serve static assets from the /public folder
 app.use('/public', express.static(path.join(__dirname, '/public')))
 
@@ -86,15 +87,16 @@ app.get('/sspi', (req, res) => {
 
     nodeSSPIObj.authenticate(req, res, (err) => {
       if (err) res.send(err)
-      const username = req.connection.user
-      let userGroups = req.connection.userGroups
-      userGroups = userGroups.filter((group) => {
-        return group.startsWith(serverConfig.DOMAIN_USER_PREFIX)
-      })
-      auth.authByAD(username, userGroups).then((result) => {
-        if (result.length > 0) res.status(200).send(result)
-        else res.status(401).send()
-      })
+      res.send(req.connection.user)
+      // const username = req.connection.user
+      // let userGroups = req.connection.userGroups
+      // userGroups = userGroups.filter((group) => {
+      //   return group.startsWith(serverConfig.DOMAIN_USER_PREFIX)
+      // })
+      // auth.authByAD(username, userGroups).then((result) => {
+      //   if (result.length > 0) res.status(200).send(result)
+      //   else res.status(401).send()
+      // })
     })
   } else res.send('SSPI Not Enabled')
 })

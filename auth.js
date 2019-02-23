@@ -1,5 +1,6 @@
 const serverConfig = require('./server.config')
 const Parse = require('parse/node')
+var generator = require('password-generator')
 
 // Initialize Parse Server
 Parse.initialize(serverConfig.PARSE_APP_ID, null, serverConfig.PARSE_MASTER_KEY)
@@ -45,21 +46,23 @@ async function updateUserRoles (parseUser, userGroups) {
 }
 
 async function resetPassword (parseUser) {
-  parseUser.set('password', serverConfig.DEFAULT_PASS)
+  const newPass = generator(12, false)
+  parseUser.set('password', newPass)
   await parseUser.save(null, {
     useMasterKey: true
   })
-  return serverConfig.DEFAULT_PASS
+  return newPass
 }
 
 async function signUpUser (username) {
   var user = new Parse.User()
+  const newPass = generator(12, false)
   user.set('username', username)
-  user.set('password', serverConfig.DEFAULT_PASS)
+  user.set('password', newPass)
   await user.save(null, {
     useMasterKey: true
   })
-  return user
+  return [user, newPass]
 }
 
 async function authByAD (username, userGroups) {
@@ -75,10 +78,10 @@ async function authByAD (username, userGroups) {
       return [username.split('\\')[1], newPassword]
     } else { // No user doesnot exist
       // Signup the user with default password
-      let parseUser = await signUpUser(username.split('\\')[1])
+      let [parseUser, newPassword] = await signUpUser(username.split('\\')[1])
       // Update user gropus
       await updateUserRoles(parseUser, userGroups)
-      return [username.split('\\')[1], serverConfig.DEFAULT_PASS]
+      return [username.split('\\')[1], newPassword]
     }
   } else { // No, user is't AD user
     return []

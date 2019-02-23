@@ -24,7 +24,7 @@ module.exports = function (ctx) {
       scopeHoisting: true,
       vueRouterMode: 'history',
       // vueCompiler: true,
-      gzip: true
+      gzip: true,
       // analyze: true,
       // extractCSS: false,
       // extendWebpack (cfg) {
@@ -35,10 +35,27 @@ module.exports = function (ctx) {
       //     exclude: /node_modules/
       //   })
       // }
+      env: ctx.dev
+        ? { // so on dev we'll have
+          ParseAPI: JSON.stringify('https://dev.api.com')
+        }
+        : { // and on build (production):
+          ParseAPI: JSON.stringify('https://prod.api.com')
+        }
     },
     devServer: {
       // https: true,
       // port: 8080,
+      proxy: {
+        // proxy all requests starting with /api to jsonplaceholder
+        '/api': {
+          target: 'http://localhost:1337',
+          changeOrigin: true,
+          pathRewrite: {
+            '^/api': ''
+          }
+        }
+      },
       open: true // opens browser window automatically
     },
     // framework: 'all' --- includes everything; for dev only!

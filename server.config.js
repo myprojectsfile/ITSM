@@ -6,8 +6,8 @@ const ServerConfig = {
   AUTH_WITH_AD: true,
   DOMAIN_CONTROLLER: 'ldap://10.1.1.110:389',
   DOMAIN: 'bpmo.local',
-  DOMAIN_USER_PREFIX: 'DESKTOP-9MHHSMS',
-  DEFAULT_PASS: 'jhDSdf34io5s..d'
+  // DOMAIN_USER_PREFIX: 'DESKTOP-9MHHSMS',
+  DOMAIN_USER_PREFIX: 'BPMO'
 }
 
 module.exports = ServerConfig

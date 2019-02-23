@@ -22,5 +22,14 @@ export default function (/* { store, ssrContext } */) {
     base: process.env.VUE_ROUTER_BASE
   })
 
+  // Router.beforeEach((to, from, next) => {
+  //   console.log(`i am routing from:${JSON.stringify(from)} to:${JSON.stringify(to)}`)
+  //   next()
+  // })
+
+  Router.onError(error => {
+    console.log(`Router Error:${JSON.stringify(error)}`)
+  })
+
   return Router
 }

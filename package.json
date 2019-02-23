@@ -18,12 +18,14 @@
   "dependencies": {
     "axios": "^0.18.0",
     "circular-json": "^0.5.9",
+    "cors": "^2.8.5",
     "express": "~4.11.x",
     "express-ntlm": "^2.3.0",
     "kerberos": "~0.0.x",
     "node-sspi": "^0.2.5",
     "parse": "~1.8.0",
     "parse-server": "*",
+    "password-generator": "^2.2.0",
     "vue-i18n": "^8.8.0"
   },
   "devDependencies": {
